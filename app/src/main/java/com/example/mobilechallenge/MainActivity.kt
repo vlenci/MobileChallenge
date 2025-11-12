@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.mobilechallenge.ui.theme.MobileChallengeTheme
 import com.example.mobilechallenge.ui.views.LoginScreen
+import com.example.mobilechallenge.ui.views.TreeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MobileChallengeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginScreen(
+                    TreeScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
