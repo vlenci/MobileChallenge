@@ -27,10 +27,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.mobilechallenge.ui.theme.fontFamily
 
 @Composable
-fun TreeScreen(modifier: Modifier) {
+fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
     Column(modifier = modifier) {
         Row(
             modifier = Modifier

@@ -38,9 +38,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+   navController: NavController
+) {
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -94,7 +99,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         {
             Text(
                 modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
-                text ="User",
+                text = "User",
                 style = TextStyle(
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -162,7 +167,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
         ) {
 
             Button(
-                onClick = {  },
+                onClick = { navController.navigate("tree") },
                 shape = RoundedCornerShape(40.dp),
                 modifier = Modifier
                     .size(
