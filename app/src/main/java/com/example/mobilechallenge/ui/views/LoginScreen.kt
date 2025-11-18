@@ -50,18 +50,31 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Column(modifier = modifier, verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Row(
+    Column(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.primary),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.primary)
                 .fillMaxWidth()
                 .height(200.dp),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Column(
                 modifier = Modifier
-                    .background(Color.White),
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(
+                            topStart = 50.dp,
+                            topEnd = 10.dp,
+                            bottomStart = 10.dp,
+                            bottomEnd = 50.dp
+                        )
+                    ),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -76,115 +89,125 @@ fun LoginScreen(
             }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(160.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Welcome",
-                style = TextStyle(
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-        }
-
         Column(
-            modifier = Modifier.
-                size(width = 320.dp, height = 100.dp))
-        {
-            Text(
-                modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
-                text = "User",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-
-            TextField(
-                value = username,
-                onValueChange = { username = it },
-                maxLines = 1,
-                shape = RoundedCornerShape(40.dp),
-                modifier = Modifier.size(
-                    width = 320.dp,
-                    height = 56.dp
-                ),
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                )
-            )
-        }
-
-        Spacer(modifier = Modifier.size(20.dp))
-
-        Column(
-            modifier = Modifier.
-            size(width = 320.dp, height = 100.dp))
-        {
-            Text(
-                modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
-                text ="Password",
-                style = TextStyle(
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            )
-
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                maxLines = 1,
-                shape = RoundedCornerShape(40.dp),
-                modifier = Modifier.size(
-                    width = 320.dp,
-                    height = 56.dp
-                ),
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                )
-            )
-        }
-
-        Spacer(modifier = Modifier.size(40.dp))
-
-        Row(
             modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+                .fillMaxSize()
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(topStart = 150.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            Button(
-                onClick = { navController.navigate("tree") },
-                shape = RoundedCornerShape(40.dp),
+            Row(
                 modifier = Modifier
-                    .size(
-                        width = 320.dp,
-                        height = 56.dp
-                    )
+                    .fillMaxWidth()
+                    .height(160.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text ="Login",
+                    text = "Welcome",
                     style = TextStyle(
-                        fontSize = 20.sp,
+                        fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
-                        //color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
             }
 
+            Column(
+                modifier = Modifier.size(width = 320.dp, height = 100.dp),
+            )
+            {
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
+                    text = "User",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                )
+
+                TextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    maxLines = 1,
+                    shape = RoundedCornerShape(40.dp),
+                    modifier = Modifier.size(
+                        width = 320.dp,
+                        height = 56.dp
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.size(20.dp))
+
+            Column(
+                modifier = Modifier.size(width = 320.dp, height = 100.dp)
+            )
+            {
+                Text(
+                    modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
+                    text = "Password",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                )
+
+                TextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    maxLines = 1,
+                    shape = RoundedCornerShape(40.dp),
+                    modifier = Modifier.size(
+                        width = 320.dp,
+                        height = 56.dp
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.size(40.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+
+                Button(
+                    onClick = { navController.navigate("tree") },
+                    shape = RoundedCornerShape(40.dp),
+                    modifier = Modifier
+                        .size(
+                            width = 320.dp,
+                            height = 56.dp
+                        )
+                ) {
+                    Text(
+                        text = "Login",
+                        style = TextStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            //color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                }
+
+            }
         }
 
     }

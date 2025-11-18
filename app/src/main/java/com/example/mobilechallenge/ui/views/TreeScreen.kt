@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,13 +33,16 @@ import com.example.mobilechallenge.ui.theme.fontFamily
 
 @Composable
 fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
-    Column(modifier = modifier) {
-        Row(
+    Column(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.primary)
+    ) {
+        Column(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.primary)
                 .fillMaxWidth()
                 .height(200.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalArrangement = Arrangement.Center
         ) {
             Column(
                 modifier = Modifier.padding(start = 10.dp),
@@ -63,6 +67,17 @@ fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
                     )
                 )
             }
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    color = Color.White,
+                    shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text("Oi")
         }
     }
 }
