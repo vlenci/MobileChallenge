@@ -7,11 +7,21 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
-/* interface LoginService {
+interface LoginService {
+
     @POST(ApiUrls.LOGIN)
     suspend fun getToken(@Body loginModel: LoginModel): TokenResponse
 
-    @POST(ApiUrls.REFRESH_TOKEN)
-    suspend fun refreshToken(@Body token: TokenRefresh): TokenAccess
+}
 
-}*/
+data class TokenResponse(
+    val refresh: String,
+    val access: String,
+)
+
+data class TokenAccess(
+    val access: String
+)
+
+
+
