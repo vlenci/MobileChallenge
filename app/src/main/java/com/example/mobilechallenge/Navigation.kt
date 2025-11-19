@@ -6,12 +6,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 import com.example.mobilechallenge.ui.views.LoginScreen
 import com.example.mobilechallenge.ui.views.TreeScreen
 
 @Composable
 fun MobileChallengeNavHost(
     modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -19,7 +21,7 @@ fun MobileChallengeNavHost(
         startDestination = "login"
     ) {
         composable("login") {
-            LoginScreen(modifier, navController)
+            LoginScreen(modifier, navController, loginViewModel)
         }
         composable("tree") {
             TreeScreen(modifier, navController)

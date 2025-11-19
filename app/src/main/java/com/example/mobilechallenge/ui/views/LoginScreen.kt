@@ -40,15 +40,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-   navController: NavController
+    navController: NavController,
+    loginViewModel: LoginViewModel
 ) {
-
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -130,8 +129,8 @@ fun LoginScreen(
                 )
 
                 TextField(
-                    value = username,
-                    onValueChange = { username = it },
+                    value = loginViewModel.username,
+                    onValueChange = { loginViewModel.setUsernameValue(it) },
                     maxLines = 1,
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier.size(
@@ -163,8 +162,8 @@ fun LoginScreen(
                 )
 
                 TextField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = loginViewModel.password,
+                    onValueChange = { loginViewModel.setPasswordValue(it) },
                     maxLines = 1,
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier.size(
