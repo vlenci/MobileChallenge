@@ -35,18 +35,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mobilechallenge.ui.LoginInput
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel,
+    navController: NavController
 ) {
 
     Column(
@@ -128,20 +131,9 @@ fun LoginScreen(
                     )
                 )
 
-                TextField(
-                    value = loginViewModel.username,
+                LoginInput(
+                    text = loginViewModel.username,
                     onValueChange = { loginViewModel.setUsernameValue(it) },
-                    maxLines = 1,
-                    shape = RoundedCornerShape(40.dp),
-                    modifier = Modifier.size(
-                        width = 320.dp,
-                        height = 56.dp
-                    ),
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
-                    )
                 )
             }
 
@@ -161,20 +153,10 @@ fun LoginScreen(
                     )
                 )
 
-                TextField(
-                    value = loginViewModel.password,
+                LoginInput(
+                    text = loginViewModel.password,
                     onValueChange = { loginViewModel.setPasswordValue(it) },
-                    maxLines = 1,
-                    shape = RoundedCornerShape(40.dp),
-                    modifier = Modifier.size(
-                        width = 320.dp,
-                        height = 56.dp
-                    ),
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent
-                    )
+                    inputType = PasswordVisualTransformation()
                 )
             }
 
@@ -188,7 +170,7 @@ fun LoginScreen(
             ) {
 
                 Button(
-                    onClick = { navController.navigate("tree") },
+                    onClick = { loginViewModel.getToken() },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier
                         .size(

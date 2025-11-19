@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mobilechallenge.ui.theme.fontFamily
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
     Column(

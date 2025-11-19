@@ -22,12 +22,15 @@ import com.example.mobilechallenge.ui.theme.MobileChallengeTheme
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 import com.example.mobilechallenge.ui.views.LoginScreen
 import com.example.mobilechallenge.ui.views.TreeScreen
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val loginViewModel: LoginViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val loginViewModel: LoginViewModel = ViewModelProvider(this)[LoginViewModel::class]
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

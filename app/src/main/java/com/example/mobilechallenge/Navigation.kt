@@ -21,7 +21,7 @@ fun MobileChallengeNavHost(
         startDestination = "login"
     ) {
         composable("login") {
-            LoginScreen(modifier, navController, loginViewModel)
+            LoginScreen(modifier, loginViewModel, navController)
         }
         composable("tree") {
             TreeScreen(modifier, navController)
