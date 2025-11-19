@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,13 +55,13 @@ fun LoginScreen(
 
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.primary),
+            .background(Color(0xFFFF325F)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.primary)
+                .background(color = Color(0xFFFF325F))
                 .fillMaxWidth()
                 .height(200.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -83,7 +84,7 @@ fun LoginScreen(
                 Image(
                     imageVector = Icons.Rounded.Person,
                     contentDescription = "Person icon",
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                    colorFilter = ColorFilter.tint(Color(0xFFFF325F)),
                     modifier = Modifier
                         .size(120.dp)
                         .padding(8.dp)
@@ -112,7 +113,8 @@ fun LoginScreen(
                     style = TextStyle(
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = Color(0xFFFF325F),
+                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
                     )
                 )
             }
@@ -127,7 +129,8 @@ fun LoginScreen(
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = Color(0xFFFF325F),
+                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
                     )
                 )
 
@@ -149,7 +152,8 @@ fun LoginScreen(
                     style = TextStyle(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = Color(0xFFFF325F),
+                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
                     )
                 )
 
@@ -176,14 +180,21 @@ fun LoginScreen(
                         .size(
                             width = 320.dp,
                             height = 56.dp
-                        )
+                        ),
+                    colors = ButtonColors(
+                        containerColor = Color(0xFFFF325F),
+                        contentColor = Color(0xFFFF325F),
+                        disabledContainerColor = Color(0xFFFF325F),
+                        disabledContentColor = Color(0xFFFF325F)
+                    )
                 ) {
                     Text(
                         text = "Login",
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            //color = MaterialTheme.colorScheme.primary
+                            color = Color.White,
+                            fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
                         )
                     )
                 }

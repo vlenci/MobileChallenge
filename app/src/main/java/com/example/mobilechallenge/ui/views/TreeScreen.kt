@@ -41,11 +41,11 @@ import com.example.mobilechallenge.ui.theme.fontFamily
 fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.primary)
+            .background(Color(0xFFFF325F))
     ) {
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.primary)
+                .background(Color(0xFFFF325F))
                 .fillMaxWidth()
                 .height(200.dp),
             verticalArrangement = Arrangement.Center
@@ -59,7 +59,8 @@ fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
                     text = "Hello",
                     style = TextStyle(
                         fontSize = 20.sp,
-                        color = Color.White
+                        color = Color.White,
+                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
                     )
                 )
 
@@ -69,7 +70,8 @@ fun TreeScreen(modifier: Modifier = Modifier, navController: NavController) {
                     text = "Username",
                     style = TextStyle(
                         fontSize = 28.sp,
-                        color = Color.White
+                        color = Color.White,
+                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
                     )
                 )
             }
