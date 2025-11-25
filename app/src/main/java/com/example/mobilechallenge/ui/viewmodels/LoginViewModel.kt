@@ -15,14 +15,14 @@ import com.example.mobilechallenge.services.TokenResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val service: LoginService
+    private val service: LoginService,
 ) : ViewModel() {
-
-    lateinit var navController: NavController
 
     val loginRepository = LoginRepositoryImpl(service)
 
@@ -33,30 +33,32 @@ class LoginViewModel @Inject constructor(
 
     var token = TokenResponse("", "")
 
+    private val _state = MutableStateFlow(false)
+    val state = _state.asStateFlow()
+
     fun getToken() {
-        if (username.value.isNullOrBlank() || password.value.isNullOrBlank()) {
-            Log.e("login sem dados", "login sem dados")
-        } else {
-            currentUiStateJob?.cancel()
-            currentUiStateJob = viewModelScope.launch {
+        viewModelScope.launch {
+            val loginModel = LoginModel(
+                username = username.value ?: "",
+                password = password.value ?: ""
+            )
 
-                val loginModel = LoginModel(
-                    username = username.value ?: "",
-                    password = password.value ?: ""
-                )
-
-                val tokenResponse = loginRepository.getToken(loginModel)
-
-                if (tokenResponse is Result.Success) {
-                    navController.navigate("tree")
-                } else {
-                    Log.e("erro login", "Erro de login: ${Result}")
-                }
-
-            }
-
+            val result = loginRepository.getToken(loginModel)
+            Log.d("username", loginModel.username)
+            Log.d("password", loginModel.password)
+            Log.d("result", result.toString())
+            _state.value = state(result)
         }
     }
+
+    private fun state(result: Result<TokenResponse>): Boolean {
+        return when (result) {
+            is Result.Error<*> -> false
+            is Result.Success<*> -> true
+        }
+    }
+
+
 
     fun setUsernameValue(value: String) {
         username.value = value

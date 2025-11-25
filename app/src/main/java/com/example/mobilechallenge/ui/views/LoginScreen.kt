@@ -41,16 +41,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.mobilechallenge.ui.LoginInput
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel,
-    navController: NavController
+    isSuccess: (StateFlow<Boolean>) -> Unit
 ) {
 
     Column(
@@ -174,7 +177,12 @@ fun LoginScreen(
             ) {
 
                 Button(
-                    onClick = { loginViewModel.getToken() },
+                    onClick = {
+                        loginViewModel.getToken()
+                        if (loginViewModel.state.value) {
+                            isSuccess(loginViewModel.state)
+                        }
+                    },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier
                         .size(
