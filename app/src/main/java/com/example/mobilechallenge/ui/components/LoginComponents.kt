@@ -31,11 +31,10 @@ import androidx.lifecycle.MutableLiveData
 
 @Composable
 fun LoginInput(
-    text: LiveData<String> = MutableLiveData(""),
+    text: String,
     onValueChange: (String) -> Unit = { },
     inputType: PasswordVisualTransformation? = null,
 ) {
-    val currentText by text.observeAsState("")
 
     var visualTransformation by remember {
         mutableStateOf(
@@ -44,7 +43,7 @@ fun LoginInput(
     }
 
     TextField(
-        value = currentText,
+        value = text,
         onValueChange = { onValueChange(it) },
         maxLines = 1,
         shape = RoundedCornerShape(40.dp),

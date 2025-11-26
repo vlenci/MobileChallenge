@@ -26,9 +26,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -48,6 +51,7 @@ import com.example.mobilechallenge.ui.LoginInput
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.math.log
 
 @Composable
 fun LoginScreen(
@@ -55,6 +59,9 @@ fun LoginScreen(
     loginViewModel: LoginViewModel,
     isSuccess: (StateFlow<Boolean>) -> Unit
 ) {
+
+    val username = loginViewModel.username.collectAsState()
+    val password = loginViewModel.password.collectAsState()
 
     Column(
         modifier = modifier
@@ -138,7 +145,7 @@ fun LoginScreen(
                 )
 
                 LoginInput(
-                    text = loginViewModel.username,
+                    text = username.value,
                     onValueChange = { loginViewModel.setUsernameValue(it) },
                 )
             }
@@ -161,7 +168,7 @@ fun LoginScreen(
                 )
 
                 LoginInput(
-                    text = loginViewModel.password,
+                    text = password.value,
                     onValueChange = { loginViewModel.setPasswordValue(it) },
                     inputType = PasswordVisualTransformation()
                 )

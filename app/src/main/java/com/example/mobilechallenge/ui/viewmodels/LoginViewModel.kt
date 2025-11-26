@@ -2,6 +2,7 @@ package com.example.mobilechallenge.ui.viewmodels
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +17,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -26,10 +29,11 @@ class LoginViewModel @Inject constructor(
 
     val loginRepository = LoginRepositoryImpl(service)
 
-    private var currentUiStateJob: Job? = null
+    private val _username = MutableStateFlow("")
+    val username = _username.asStateFlow()
 
-    val username = MutableLiveData<String>()
-    val password = MutableLiveData<String>()
+    private val _password = MutableStateFlow("")
+    val password = _password.asStateFlow()
 
     var token = TokenResponse("", "")
 
@@ -58,13 +62,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
-
     fun setUsernameValue(value: String) {
-        username.value = value
+        _username.value = value
     }
 
     fun setPasswordValue(value: String) {
-        password.value = value
+        _password.value = value
     }
 }
