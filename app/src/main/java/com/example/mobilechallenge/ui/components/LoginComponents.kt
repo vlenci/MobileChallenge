@@ -1,5 +1,6 @@
 package com.example.mobilechallenge.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -54,29 +56,28 @@ fun LoginInput(
         visualTransformation = visualTransformation,
         trailingIcon = {
             if (isPassword) {
-                Box {
-                    Icon(
-                        imageVector =
-                            if (visualTransformation == PasswordVisualTransformation()) {
-                                Icons.Default.Visibility
-                            } else {
-                                Icons.Default.VisibilityOff
-                            },
-                        contentDescription = "Visibility",
-                        modifier = Modifier
-                            .clickable(
-                                onClick = {
-                                    visualTransformation =
-                                        if (visualTransformation == PasswordVisualTransformation()) {
-                                            VisualTransformation.None
-                                        } else {
-                                            PasswordVisualTransformation()
-                                        }
-                                }
-                            )
-                            .padding(10.dp)
-                    )
-                }
+                Icon(
+                    imageVector =
+                        if (visualTransformation == PasswordVisualTransformation()) {
+                            Icons.Default.Visibility
+                        } else {
+                            Icons.Default.VisibilityOff
+                        },
+                    contentDescription = "Visibility",
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(40.dp))
+                        .clickable(
+                            onClick = {
+                                visualTransformation =
+                                    if (visualTransformation == PasswordVisualTransformation()) {
+                                        VisualTransformation.None
+                                    } else {
+                                        PasswordVisualTransformation()
+                                    }
+                            }
+                        )
+                        .padding(10.dp)
+                )
             }
         }
 

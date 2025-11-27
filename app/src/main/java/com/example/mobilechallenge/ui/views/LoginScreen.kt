@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -183,9 +184,9 @@ fun LoginScreen(
                             width = 320.dp,
                             height = 56.dp
                         ),
-                    colors = ButtonColors(
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFF325F),
-                        contentColor = Color(0xFFFF325F),
+                        contentColor = Color.DarkGray,
                         disabledContainerColor = Color(0xFFFF325F),
                         disabledContentColor = Color(0xFFFF325F)
                     )
