@@ -16,12 +16,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -47,6 +46,18 @@ fun LoginScreen(
     val username = loginViewModel.username.collectAsState()
     val password = loginViewModel.password.collectAsState()
     val state = loginViewModel.state.collectAsState()
+
+    LaunchedEffect(state.value) {
+        when (val loginState = state.value) {
+            is LoginState.Success<*> -> {
+                navigateToHome(loginState.data as String)
+            }
+            is LoginState.Error -> {
+                Log.e("Login error", "Error message: ${loginState.message} / Error code: ${loginState.code}")
+            }
+            else -> {}
+        }
+    }
 
     Column(
         modifier = modifier
@@ -169,15 +180,7 @@ fun LoginScreen(
             ) {
 
                 Button(
-                    onClick = {
-                        loginViewModel.getToken()
-                        when (val loginState = state.value) {
-                            is LoginState.Error -> Log.e("Login", "Login Inválido")
-                            is LoginState.Success<*> -> navigateToHome(loginState.data as String)
-                            LoginState.Idle -> {}
-                            LoginState.Loading -> {}
-                        }
-                    },
+                    onClick = { loginViewModel.getToken() },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier
                         .size(
@@ -192,7 +195,7 @@ fun LoginScreen(
                     )
                 ) {
                     if (loginViewModel.state == LoginState.Loading) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(color = Color.White)
                     } else {
                         Text(
                             text = "Login",
