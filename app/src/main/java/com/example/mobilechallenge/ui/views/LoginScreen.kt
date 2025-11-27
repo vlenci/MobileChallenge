@@ -1,5 +1,7 @@
 package com.example.mobilechallenge.ui.views
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,12 +46,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mobilechallenge.LoginState
 import com.example.mobilechallenge.ui.LoginInput
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.log
@@ -56,12 +62,13 @@ import kotlin.math.log
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel,
-    isSuccess: (StateFlow<Boolean>) -> Unit
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    navigateToHome: (String) -> Unit
 ) {
 
     val username = loginViewModel.username.collectAsState()
     val password = loginViewModel.password.collectAsState()
+    val state = loginViewModel.state.collectAsState()
 
     Column(
         modifier = modifier
@@ -186,8 +193,11 @@ fun LoginScreen(
                 Button(
                     onClick = {
                         loginViewModel.getToken()
-                        if (loginViewModel.state.value) {
-                            isSuccess(loginViewModel.state)
+                        when (val loginState = state.value) {
+                            is LoginState.Error -> Log.e("Login", "Login Inválido")
+                            is LoginState.Success<*> -> navigateToHome(loginState.data as String)
+                            LoginState.Idle -> {}
+                            LoginState.Loading -> {}
                         }
                     },
                     shape = RoundedCornerShape(40.dp),
@@ -203,15 +213,19 @@ fun LoginScreen(
                         disabledContentColor = Color(0xFFFF325F)
                     )
                 ) {
-                    Text(
-                        text = "Login",
-                        style = TextStyle(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
+                    if (loginViewModel.state == LoginState.Loading) {
+                        CircularProgressIndicator()
+                    } else {
+                        Text(
+                            text = "Login",
+                            style = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
+                            )
                         )
-                    )
+                    }
                 }
 
             }

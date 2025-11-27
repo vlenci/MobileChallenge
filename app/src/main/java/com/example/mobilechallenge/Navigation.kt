@@ -13,7 +13,6 @@ import com.example.mobilechallenge.ui.views.TreeScreen
 @Composable
 fun MobileChallengeNavHost(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(
@@ -21,8 +20,10 @@ fun MobileChallengeNavHost(
         startDestination = "login"
     ) {
         composable("login") {
-            LoginScreen(modifier, loginViewModel) {
-                navController.navigate("tree")
+            LoginScreen(modifier) {
+                navController.navigate("tree") {
+                    popUpTo("login") { inclusive = true }
+                }
             }
         }
         composable("tree") {

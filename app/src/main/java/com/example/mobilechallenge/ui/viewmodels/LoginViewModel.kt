@@ -8,9 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.mobilechallenge.LoginState
 import com.example.mobilechallenge.model.LoginModel
+import com.example.mobilechallenge.repositories.LoginRepository
 import com.example.mobilechallenge.repositories.LoginRepositoryImpl
-import com.example.mobilechallenge.repositories.Result
 import com.example.mobilechallenge.services.LoginService
 import com.example.mobilechallenge.services.TokenResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,41 +25,27 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val service: LoginService,
+    private val repository: LoginRepository
 ) : ViewModel() {
-
-    val loginRepository = LoginRepositoryImpl(service)
-
     private val _username = MutableStateFlow("")
     val username = _username.asStateFlow()
 
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
 
-    var token = TokenResponse("", "")
-
-    private val _state = MutableStateFlow(false)
+    private val _state = MutableStateFlow<LoginState<String>>(LoginState.Idle)
     val state = _state.asStateFlow()
 
     fun getToken() {
         viewModelScope.launch {
             val loginModel = LoginModel(
-                username = username.value ?: "",
-                password = password.value ?: ""
+                username = username.value,
+                password = password.value
             )
 
-            val result = loginRepository.getToken(loginModel)
-            Log.d("username", loginModel.username)
-            Log.d("password", loginModel.password)
-            Log.d("result", result.toString())
-            _state.value = state(result)
-        }
-    }
-
-    private fun state(result: Result<TokenResponse>): Boolean {
-        return when (result) {
-            is Result.Error<*> -> false
-            is Result.Success<*> -> true
+            _state.value = LoginState.Loading
+            val result = repository.getToken(loginModel)
+            _state.value = result
         }
     }
 

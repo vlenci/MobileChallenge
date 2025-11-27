@@ -1,5 +1,6 @@
 package com.example.mobilechallenge
 
+import com.example.mobilechallenge.repositories.LoginRepository
 import com.example.mobilechallenge.services.LoginService
 import com.example.mobilechallenge.utils.ApiUrls
 import dagger.Module

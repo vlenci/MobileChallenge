@@ -27,7 +27,6 @@ import kotlinx.serialization.Serializable
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -40,7 +39,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MobileChallengeNavHost(
                         modifier = Modifier.padding(innerPadding),
-                        loginViewModel = loginViewModel
                     )
                 }
             }
