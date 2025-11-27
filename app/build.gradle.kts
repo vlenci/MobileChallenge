@@ -55,6 +55,8 @@ dependencies {
 
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
+    implementation("androidx.compose.material:material-icons-extended")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
