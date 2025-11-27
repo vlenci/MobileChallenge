@@ -194,7 +194,7 @@ fun LoginScreen(
                         disabledContentColor = Color(0xFFFF325F)
                     )
                 ) {
-                    if (loginViewModel.state == LoginState.Loading) {
+                    if (state.value == LoginState.Loading) {
                         CircularProgressIndicator(color = Color.White)
                     } else {
                         Text(
