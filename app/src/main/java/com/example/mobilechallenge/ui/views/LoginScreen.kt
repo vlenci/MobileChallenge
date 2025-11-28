@@ -5,8 +5,8 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -86,15 +86,14 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .background(color = Color(0xFFFF325F))
                 .fillMaxWidth()
                 .height(200.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            contentAlignment = Alignment.Center
         ) {
-            Column(
+            Box(
                 modifier = Modifier
                     .background(
                         color = Color.White,
@@ -105,8 +104,7 @@ fun LoginScreen(
                             bottomEnd = 50.dp
                         )
                     ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                contentAlignment = Alignment.Center
             ) {
                 Image(
                     imageVector = Icons.Rounded.Person,
@@ -128,12 +126,11 @@ fun LoginScreen(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(160.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "Welcome",
@@ -152,7 +149,6 @@ fun LoginScreen(
                 textIsEmpty = usernameIsEmpty
             )
 
-
             Spacer(modifier = Modifier.size(20.dp))
 
             LoginInput(
@@ -164,13 +160,11 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.size(40.dp))
 
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                contentAlignment = Alignment.Center
             ) {
-
                 Button(
                     onClick = {
                         val usernameEmpty = username.value.isEmpty()
