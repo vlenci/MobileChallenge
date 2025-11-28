@@ -24,6 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +54,9 @@ fun LoginScreen(
     val state = loginViewModel.state.collectAsState()
 
     val context = LocalContext.current
+
+    var usernameIsEmpty: Boolean? by remember { mutableStateOf(null) }
+    var passwordIsEmpty: Boolean? by remember { mutableStateOf(null) }
 
     LaunchedEffect(state.value) {
         when (val loginState = state.value) {
@@ -139,50 +146,21 @@ fun LoginScreen(
                 )
             }
 
-            Column(
-                modifier = Modifier.size(width = 320.dp, height = 100.dp),
+            LoginInput(
+                text = username.value,
+                onValueChange = { loginViewModel.setUsernameValue(it) },
+                textIsEmpty = usernameIsEmpty
             )
-            {
-                Text(
-                    modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
-                    text = "User",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFF325F),
-                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
-                    )
-                )
 
-                LoginInput(
-                    text = username.value,
-                    onValueChange = { loginViewModel.setUsernameValue(it) },
-                )
-            }
 
             Spacer(modifier = Modifier.size(20.dp))
 
-            Column(
-                modifier = Modifier.size(width = 320.dp, height = 100.dp)
+            LoginInput(
+                text = password.value,
+                onValueChange = { loginViewModel.setPasswordValue(it) },
+                isPassword = true,
+                textIsEmpty = passwordIsEmpty,
             )
-            {
-                Text(
-                    modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
-                    text = "Password",
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFFF325F),
-                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
-                    )
-                )
-
-                LoginInput(
-                    text = password.value,
-                    onValueChange = { loginViewModel.setPasswordValue(it) },
-                    isPassword = true
-                )
-            }
 
             Spacer(modifier = Modifier.size(40.dp))
 
@@ -194,7 +172,17 @@ fun LoginScreen(
             ) {
 
                 Button(
-                    onClick = { loginViewModel.getToken() },
+                    onClick = {
+                        val usernameEmpty = username.value.isEmpty()
+                        val passwordEmpty = password.value.isEmpty()
+
+                        usernameIsEmpty = usernameEmpty
+                        passwordIsEmpty = passwordEmpty
+
+                        if (!usernameEmpty && !passwordEmpty) {
+                            loginViewModel.getToken()
+                        }
+                    },
                     shape = RoundedCornerShape(40.dp),
                     modifier = Modifier
                         .size(
