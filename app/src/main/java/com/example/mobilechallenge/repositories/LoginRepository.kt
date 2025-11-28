@@ -28,7 +28,7 @@ class LoginRepositoryImpl @Inject constructor(
                 if (body != null) {
                     LoginState.Success(body.access)
                 } else {
-                    LoginState.Error("Vazio papai")
+                    LoginState.Error("Body vazio")
                 }
             } else {
                 LoginState.Error("Erro na API", response.code())

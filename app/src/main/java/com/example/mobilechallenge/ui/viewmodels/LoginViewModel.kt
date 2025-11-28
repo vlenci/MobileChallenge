@@ -49,6 +49,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun updateState(newState: LoginState<String>) {
+        _state.value = newState
+    }
+
     fun setUsernameValue(value: String) {
         _username.value = value
     }

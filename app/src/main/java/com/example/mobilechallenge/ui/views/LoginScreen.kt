@@ -1,6 +1,7 @@
 package com.example.mobilechallenge.ui.views
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,13 +49,25 @@ fun LoginScreen(
     val password = loginViewModel.password.collectAsState()
     val state = loginViewModel.state.collectAsState()
 
+    val context = LocalContext.current
+
     LaunchedEffect(state.value) {
         when (val loginState = state.value) {
             is LoginState.Success<*> -> {
                 navigateToHome(loginState.data as String)
+                loginViewModel.updateState(LoginState.Idle)
             }
             is LoginState.Error -> {
-                Log.e("Login error", "Error message: ${loginState.message} / Error code: ${loginState.code}")
+                Log.e(
+                    "Login error",
+                    "Error message: ${loginState.message} / Error code: ${loginState.code}"
+                )
+                Toast.makeText(
+                    context,
+                    "Nome de usuário ou senha incorretos",
+                    Toast.LENGTH_SHORT
+                ).show()
+                loginViewModel.updateState(LoginState.Idle)
             }
             else -> {}
         }
@@ -189,7 +203,7 @@ fun LoginScreen(
                         ),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFFF325F),
-                        contentColor = Color.DarkGray,
+                        contentColor = Color.White,
                         disabledContainerColor = Color(0xFFFF325F),
                         disabledContentColor = Color(0xFFFF325F)
                     )
