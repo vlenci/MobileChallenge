@@ -17,7 +17,7 @@ fun MobileChallengeNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = "tree"
     ) {
         composable("login") {
             LoginScreen(modifier) {
@@ -27,7 +27,11 @@ fun MobileChallengeNavHost(
             }
         }
         composable("tree") {
-            TreeScreen(modifier, navController)
+            TreeScreen(modifier, navController) {
+                navController.navigate("login") {
+                    popUpTo("tree") { inclusive = true }
+                }
+            }
         }
     }
 }

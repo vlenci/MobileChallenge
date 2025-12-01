@@ -204,9 +204,7 @@ fun LoginScreen(
                         )
                     }
                 }
-
             }
         }
-
     }
 }
