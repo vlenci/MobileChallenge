@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,11 +17,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,11 +34,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -42,6 +48,7 @@ import com.example.mobilechallenge.LoginState
 import com.example.mobilechallenge.ui.LoginInput
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
@@ -58,6 +65,8 @@ fun LoginScreen(
     var usernameIsEmpty: Boolean? by remember { mutableStateOf(null) }
     var passwordIsEmpty: Boolean? by remember { mutableStateOf(null) }
 
+    var showDialog by remember { mutableStateOf(false) }
+
     LaunchedEffect(state.value) {
         when (val loginState = state.value) {
             is LoginState.Success<*> -> {
@@ -69,14 +78,56 @@ fun LoginScreen(
                     "Login error",
                     "Error message: ${loginState.message} / Error code: ${loginState.code}"
                 )
-                Toast.makeText(
-                    context,
-                    "Nome de usuário ou senha incorretos",
-                    Toast.LENGTH_SHORT
-                ).show()
+                showDialog = true
                 loginViewModel.updateState(LoginState.Idle)
             }
             else -> {}
+        }
+    }
+
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = {showDialog = false},
+            modifier = Modifier
+                .clip(RoundedCornerShape(40.dp))
+                .size(300.dp, 200.dp)
+                .background(Color.LightGray)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    modifier = Modifier.padding(top = 32.dp),
+                    text = "Login inválido",
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(28.dp))
+
+                Text(
+                    modifier = Modifier.padding(horizontal = 20.dp),
+                    text = "Usuário ou senha incorretos. \nTente novamente.",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+
+            }
+
+            Row(
+                modifier = Modifier.padding(bottom = 12.dp, end = 12.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("Ok")
+                }
+            }
         }
     }
 
