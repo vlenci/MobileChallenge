@@ -8,6 +8,6 @@ object ApiUrls {
 
     const val LOGIN = "token"
 
-    const val REFRESH_TOKEN = "token/refresh"
+    const val TREE = "implantation/mobile/tree?site="
 
 }

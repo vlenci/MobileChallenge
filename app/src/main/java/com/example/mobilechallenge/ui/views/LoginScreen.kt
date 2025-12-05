@@ -92,7 +92,7 @@ fun LoginScreen(
             modifier = Modifier
                 .clip(RoundedCornerShape(40.dp))
                 .size(300.dp, 200.dp)
-                .background(Color.LightGray)
+                .background(Color.White)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),

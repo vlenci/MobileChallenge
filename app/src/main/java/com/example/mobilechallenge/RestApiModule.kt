@@ -2,6 +2,7 @@ package com.example.mobilechallenge
 
 import com.example.mobilechallenge.repositories.LoginRepository
 import com.example.mobilechallenge.services.LoginService
+import com.example.mobilechallenge.services.TreeService
 import com.example.mobilechallenge.utils.ApiUrls
 import dagger.Module
 import dagger.Provides
@@ -39,5 +40,11 @@ object RestApiModule {
     @Singleton
     fun provideTokenService(retrofit: Retrofit): LoginService {
         return retrofit.create(LoginService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTreeService(retrofit: Retrofit): TreeService {
+        return retrofit.create(TreeService::class.java)
     }
 }
