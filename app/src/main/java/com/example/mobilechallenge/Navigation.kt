@@ -3,9 +3,11 @@ package com.example.mobilechallenge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 import com.example.mobilechallenge.ui.views.LoginScreen
 import com.example.mobilechallenge.ui.views.TreeScreen
@@ -20,13 +22,16 @@ fun MobileChallengeNavHost(
         startDestination = "login"
     ) {
         composable("login") {
-            LoginScreen(modifier) {
-                navController.navigate("tree") {
+            LoginScreen(modifier) { token ->
+                navController.navigate("tree/$token") {
                     popUpTo("login") { inclusive = true }
                 }
             }
         }
-        composable("tree") {
+        composable(
+            route = "tree/{token}",
+            arguments = listOf(navArgument("token") { type = NavType.StringType })
+        ) {
             TreeScreen(modifier) {
                 navController.navigate("login") {
                     popUpTo("tree") { inclusive = true }

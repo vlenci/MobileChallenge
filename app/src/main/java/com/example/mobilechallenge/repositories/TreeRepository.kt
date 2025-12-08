@@ -1,19 +1,16 @@
 package com.example.mobilechallenge.repositories
 
 import android.content.Context
-import com.example.mobilechallenge.LoginState
 import com.example.mobilechallenge.services.AssetResponse
 import com.example.mobilechallenge.services.TreeService
 import com.example.mobilechallenge.states.TreeUiState
 import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
-import retrofit2.Response
 
 interface TreeRepository {
 
-    suspend fun getLocalTree(token: String, siteId: Int): TreeUiState<List<TreeNode>>
+    suspend fun getTree(token: String, siteId: Int): TreeUiState<List<TreeNode>>
     fun buildTreeStructure(
         assets: List<AssetResponse>,
     ): List<TreeNode>
@@ -43,7 +40,7 @@ class TreeRepositoryImpl @Inject constructor(
     private val treeService: TreeService,
     @ApplicationContext private val context: Context
 ): TreeRepository {
-    override suspend fun getLocalTree(token: String, siteId: Int): TreeUiState<List<TreeNode>> {
+    override suspend fun getTree(token: String, siteId: Int): TreeUiState<List<TreeNode>> {
         return try {
             val response = treeService.getTree(token, siteId)
 

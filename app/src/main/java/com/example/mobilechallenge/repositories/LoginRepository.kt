@@ -10,7 +10,7 @@ import retrofit2.HttpException
 
 interface LoginRepository {
 
-    suspend fun getToken(loginModel: LoginModel): LoginState<String>
+    suspend fun login(loginModel: LoginModel): LoginState<String>
 
 }
 
@@ -18,9 +18,10 @@ class LoginRepositoryImpl @Inject constructor(
     private val loginService: LoginService,
     @ApplicationContext private val context: Context
 ) : LoginRepository {
-    override suspend fun getToken(loginModel: LoginModel): LoginState<String> {
+    override suspend fun login(loginModel: LoginModel): LoginState<String> {
         return try {
             val response = loginService.getToken(loginModel)
+
 
             if (response.isSuccessful) {
                 val body = response.body()

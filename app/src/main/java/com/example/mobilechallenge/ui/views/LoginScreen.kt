@@ -1,7 +1,6 @@
 package com.example.mobilechallenge.ui.views
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -70,7 +69,8 @@ fun LoginScreen(
     LaunchedEffect(state.value) {
         when (val loginState = state.value) {
             is LoginState.Success<*> -> {
-                navigateToHome(loginState.data as String)
+                Log.d("loginState.data", loginState.data as String)
+                navigateToHome(loginState.data)
                 loginViewModel.updateState(LoginState.Idle)
             }
             is LoginState.Error -> {
@@ -225,7 +225,7 @@ fun LoginScreen(
                         passwordIsEmpty = passwordEmpty
 
                         if (!usernameEmpty && !passwordEmpty) {
-                            loginViewModel.getToken()
+                            loginViewModel.login()
                         }
                     },
                     shape = RoundedCornerShape(40.dp),

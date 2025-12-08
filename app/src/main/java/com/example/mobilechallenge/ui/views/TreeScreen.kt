@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.mobilechallenge.LoginState
+import com.example.mobilechallenge.repositories.TreeNode
 import com.example.mobilechallenge.states.TreeUiState
 import com.example.mobilechallenge.ui.viewmodels.TreeViewModel
 
@@ -192,6 +193,7 @@ fun TreeScreen(
                 },
                 shape = RoundedCornerShape(40.dp),
                 modifier = Modifier
+                    .padding(top = 20.dp)
                     .size(
                         width = 320.dp,
                         height = 56.dp

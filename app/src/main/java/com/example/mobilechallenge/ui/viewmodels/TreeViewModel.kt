@@ -1,9 +1,8 @@
 package com.example.mobilechallenge.ui.viewmodels
 
-import androidx.compose.runtime.State
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobilechallenge.LoginState
 import com.example.mobilechallenge.repositories.TreeNode
 import com.example.mobilechallenge.repositories.TreeRepository
 import com.example.mobilechallenge.states.TreeUiState
@@ -16,19 +15,29 @@ import javax.inject.Inject
 @HiltViewModel
 class TreeViewModel @Inject constructor(
     private val repository: TreeRepository,
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    private val  _uiState = MutableStateFlow<TreeUiState<List<TreeNode>>>(TreeUiState.Loading)
+    private val  _uiState = MutableStateFlow<TreeUiState<List<TreeNode>>>(TreeUiState.Idle)
     val uiState = _uiState.asStateFlow()
+
+    private val tree = MutableStateFlow<List<TreeNode>?>(null)
+    val _tree = tree.asStateFlow()
 
     fun getTree() {
         viewModelScope.launch {
+            val token = savedStateHandle.get<String>("token")
 
-            _uiState.value = TreeUiState.Loading
-            val result = repository.getLocalTree(
-                token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY0OTM4OTQ0LCJpYXQiOjE3NjQ5Mzc3NDQsImp0aSI6IjdmNDM1ZDFkMWFhNDRlNTY4ZmZhZTYwNGQ4MWUyYmIwIiwidXNlcl9pZCI6MTQ3Mn0.h789WcFB0P_6uOSaIuZMeehtYCgDIV_4GQ3wee8Azcs",
-                siteId = 20640
-            )
-            _uiState.value = result
+            if (token != null) {
+                _uiState.value = TreeUiState.Loading
+
+                val result = repository.getTree(
+                    token = "Bearer $token",
+                    siteId = 20640
+                )
+                _uiState.value = result
+            } else {
+                _uiState.value = TreeUiState.Error("Token não encontrado")
+            }
         }
     }
 
