@@ -2,18 +2,25 @@ package com.example.mobilechallenge.ui.views
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -41,7 +48,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.example.mobilechallenge.LoginState
 import com.example.mobilechallenge.repositories.TreeNode
 import com.example.mobilechallenge.states.TreeUiState
 import com.example.mobilechallenge.ui.viewmodels.TreeViewModel
@@ -52,25 +58,28 @@ fun TreeScreen(
     modifier: Modifier = Modifier,
     treeViewModel: TreeViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit
-    ) {
+) {
 
     val uiState = treeViewModel.uiState.collectAsState()
 
     var showTree by remember { mutableStateOf(false) }
+
+    var tree: List<TreeNode>? by remember { mutableStateOf(null) }
 
     LaunchedEffect(uiState.value) {
         when (val treeState = uiState.value) {
             is TreeUiState.Success<*> -> {
                 showTree = true
                 Log.d("success", "Se entrar no success o log tai")
-                treeViewModel.updateState(TreeUiState.Loading)
+                tree = treeState.tree
+                treeViewModel.updateState(TreeUiState.Idle)
             }
             is TreeUiState.Error -> {
                 Log.e(
                     "Login error",
                     "Error message: ${treeState.message} / Error code: ${treeState.code}"
                 )
-                treeViewModel.updateState(TreeUiState.Loading)
+                treeViewModel.updateState(TreeUiState.Idle)
             }
             else -> {}
         }
@@ -205,7 +214,7 @@ fun TreeScreen(
                     disabledContentColor = Color(0xFFFF325F)
                 )
             ) {
-                if (uiState.value == LoginState.Loading) {
+                if (uiState.value == TreeUiState.Loading) {
                     CircularProgressIndicator(color = Color.White)
                 } else {
                     Text(
@@ -219,6 +228,70 @@ fun TreeScreen(
                     )
                 }
             }
+            if (showTree) {
+                LazyColumn(
+                    modifier = Modifier
+                        .heightIn(300.dp, 600.dp)
+                        .padding(top = 20.dp)
+                ) {
+                    item {
+                        Tree(tree)
+                    }
+                }
+            }
         }
+    }
+}
+
+@Composable
+fun Tree(
+    nodes: List<TreeNode>?,
+    indent: String = ""
+) {
+    var isAssetExpanded by remember { mutableStateOf(false) }
+
+    if (nodes != null) {
+        nodes.forEach { node ->
+            Row {
+                if (node.children.isNotEmpty()) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowRight,
+                        contentDescription = null,
+                        modifier = Modifier.clickable(
+                            onClick = {
+                                isAssetExpanded = !isAssetExpanded
+                            }
+                        )
+                    )
+                }
+                if (node.tag != null) {
+                    Text(
+                        text = "$indent ${node.name} - ${node.tag}",
+                        modifier = Modifier.clickable(
+                            onClick = {
+                                isAssetExpanded = !isAssetExpanded
+                            }
+                        )
+                    )
+                } else {
+                    Text(
+                        text = "$indent ${node.name}",
+                        modifier = Modifier.clickable(
+                            onClick = {
+                                isAssetExpanded = !isAssetExpanded
+                            }
+                        )
+                    )
+                }
+            }
+
+            if (node.children.isNotEmpty()) {
+                if (isAssetExpanded)
+                    Tree(node.children, "$indent  ")
+            }
+
+        }
+    } else {
+        Text("Árvore vazia")
     }
 }
