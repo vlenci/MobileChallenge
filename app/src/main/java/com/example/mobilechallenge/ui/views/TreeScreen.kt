@@ -2,6 +2,7 @@ package com.example.mobilechallenge.ui.views
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -178,7 +180,7 @@ fun TreeScreen(
                 )
 
                 Text(
-                    text = "Username",
+                    text = treeViewModel.username,
                     style = TextStyle(
                         fontSize = 28.sp,
                         color = Color.White,
@@ -232,7 +234,6 @@ fun TreeScreen(
                 LazyColumn(
                     modifier = Modifier
                         .heightIn(300.dp, 600.dp)
-                        .padding(top = 20.dp)
                 ) {
                     item {
                         Tree(tree)
@@ -248,50 +249,57 @@ fun Tree(
     nodes: List<TreeNode>?,
     indent: String = ""
 ) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        if (nodes != null) {
+            nodes.forEach { node ->
+                TreeNodeItem(node)
+            }
+        } else {
+            Text("Árvore vazia")
+        }
+    }
+}
+
+@Composable
+fun TreeNodeItem(
+    node: TreeNode,
+    indent: String = ""
+) {
     var isAssetExpanded by remember { mutableStateOf(false) }
 
-    if (nodes != null) {
-        nodes.forEach { node ->
-            Row {
-                if (node.children.isNotEmpty()) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowRight,
-                        contentDescription = null,
-                        modifier = Modifier.clickable(
-                            onClick = {
-                                isAssetExpanded = !isAssetExpanded
-                            }
-                        )
-                    )
+    Row(
+        modifier = if (node.children.isNotEmpty()) {
+            Modifier.clickable(
+                onClick = {
+                    isAssetExpanded = !isAssetExpanded
                 }
-                if (node.tag != null) {
-                    Text(
-                        text = "$indent ${node.name} - ${node.tag}",
-                        modifier = Modifier.clickable(
-                            onClick = {
-                                isAssetExpanded = !isAssetExpanded
-                            }
-                        )
-                    )
-                } else {
-                    Text(
-                        text = "$indent ${node.name}",
-                        modifier = Modifier.clickable(
-                            onClick = {
-                                isAssetExpanded = !isAssetExpanded
-                            }
-                        )
-                    )
-                }
-            }
-
-            if (node.children.isNotEmpty()) {
-                if (isAssetExpanded)
-                    Tree(node.children, "$indent  ")
-            }
-
+            )
+        } else {
+            // Quando o nó não tem filho o modifier não recebe nada
+            Modifier
         }
-    } else {
-        Text("Árvore vazia")
+    ) {
+        if (node.children.isNotEmpty()) {
+            Icon(
+                imageVector =
+                    if (!isAssetExpanded) Icons.Filled.ArrowRight else Icons.Filled.ArrowDropDown,
+                contentDescription = null,
+            )
+        }
+        Text(
+            text = if (node.tag == null)
+                "$indent ${node.name}"
+            else
+                "$indent ${node.name} - ${node.tag}"
+        )
+    }
+
+    if (node.children.isNotEmpty()) {
+        if (isAssetExpanded)
+            Tree(node.children, "$indent  ")
     }
 }

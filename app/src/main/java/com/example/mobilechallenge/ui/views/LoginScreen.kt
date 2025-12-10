@@ -52,7 +52,7 @@ import com.example.mobilechallenge.ui.viewmodels.LoginViewModel
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = hiltViewModel(),
-    navigateToHome: (String) -> Unit
+    navigateToHome: (String, String) -> Unit
 ) {
 
     val username = loginViewModel.username.collectAsState()
@@ -70,7 +70,7 @@ fun LoginScreen(
         when (val loginState = state.value) {
             is LoginState.Success<*> -> {
                 Log.d("loginState.data", loginState.data as String)
-                navigateToHome(loginState.data)
+                navigateToHome(loginState.data, username.value)
                 loginViewModel.updateState(LoginState.Idle)
             }
             is LoginState.Error -> {

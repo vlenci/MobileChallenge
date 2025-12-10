@@ -20,8 +20,12 @@ class TreeViewModel @Inject constructor(
     private val  _uiState = MutableStateFlow<TreeUiState<List<TreeNode>>>(TreeUiState.Idle)
     val uiState = _uiState.asStateFlow()
 
-    private val tree = MutableStateFlow<List<TreeNode>?>(null)
-    val _tree = tree.asStateFlow()
+    private val _tree = MutableStateFlow<List<TreeNode>?>(null)
+    val tree = _tree.asStateFlow()
+
+    private val _username = savedStateHandle.get<String>("username") ?: ""
+    val username = _username
+
 
     fun getTree() {
         viewModelScope.launch {

@@ -22,15 +22,18 @@ fun MobileChallengeNavHost(
         startDestination = "login"
     ) {
         composable("login") {
-            LoginScreen(modifier) { token ->
-                navController.navigate("tree/$token") {
+            LoginScreen(modifier) { token, username ->
+                navController.navigate("tree/$token/$username") {
                     popUpTo("login") { inclusive = true }
                 }
             }
         }
         composable(
-            route = "tree/{token}",
-            arguments = listOf(navArgument("token") { type = NavType.StringType })
+            route = "tree/{token}/{username}",
+            arguments = listOf(
+                navArgument("token") { type = NavType.StringType },
+                navArgument("username") { type = NavType.StringType }
+                )
         ) {
             TreeScreen(modifier) {
                 navController.navigate("login") {
