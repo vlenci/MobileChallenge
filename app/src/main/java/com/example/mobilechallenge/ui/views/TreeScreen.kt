@@ -23,6 +23,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.HomeRepairService
+import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -44,12 +49,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.mobilechallenge.R
 import com.example.mobilechallenge.repositories.TreeNode
 import com.example.mobilechallenge.states.TreeUiState
 import com.example.mobilechallenge.ui.viewmodels.TreeViewModel
@@ -233,6 +240,7 @@ fun TreeScreen(
             if (showTree) {
                 LazyColumn(
                     modifier = Modifier
+                        .padding(start = 12.dp, top = 24.dp)
                         .heightIn(300.dp, 600.dp)
                 ) {
                     item {
@@ -252,7 +260,7 @@ fun Tree(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(start = 24.dp)
     ) {
         if (nodes != null) {
             nodes.forEach { node ->
@@ -271,30 +279,44 @@ fun TreeNodeItem(
 ) {
     var isAssetExpanded by remember { mutableStateOf(false) }
 
+    var assetModifier = if (node.children.isNotEmpty()) {
+        Modifier.clickable(
+            onClick = {
+                isAssetExpanded = !isAssetExpanded
+            }
+        )
+    } else {
+        // Quando o nó não tem filho o modifier não recebe nada
+        Modifier
+    }
+
     Row(
-        modifier = if (node.children.isNotEmpty()) {
-            Modifier.clickable(
-                onClick = {
-                    isAssetExpanded = !isAssetExpanded
-                }
-            )
-        } else {
-            // Quando o nó não tem filho o modifier não recebe nada
-            Modifier
-        }
+        modifier = assetModifier.padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        if (node.children.isNotEmpty()) {
-            Icon(
-                imageVector =
-                    if (!isAssetExpanded) Icons.Filled.ArrowRight else Icons.Filled.ArrowDropDown,
-                contentDescription = null,
-            )
-        }
+        Icon(
+            painter = when (isAssetExpanded) {
+                true -> {
+                    painterResource(R.drawable.folder_open_24px)
+                }
+                false -> {
+                    if (node.children.isNotEmpty())
+                        painterResource(R.drawable.folder_24px)
+                    else
+                        painterResource(R.drawable.home_repair_service_24px)
+
+                }
+            },
+            tint = Color.Black,
+            contentDescription = null,
+        )
+
+        Spacer(Modifier.padding(horizontal = 4.dp))
+
         Text(
-            text = if (node.tag == null)
-                "$indent ${node.name}"
-            else
-                "$indent ${node.name} - ${node.tag}"
+            text = if (node.tag.isNullOrEmpty()) "$indent ${node.name}"
+            else "$indent ${node.name} - ${node.tag}",
+            fontSize = 16.sp
         )
     }
 
