@@ -178,7 +178,7 @@ fun TreeScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(bottom = 12.dp),
-                    text = "Hello",
+                    text = "Olá",
                     style = TextStyle(
                         fontSize = 20.sp,
                         color = Color.White,
@@ -187,7 +187,11 @@ fun TreeScreen(
                 )
 
                 Text(
-                    text = treeViewModel.username,
+                    // Formatar o nome com base nos usernames padrão da SEMEQ.
+                    text = treeViewModel.username
+                        .toLowerCase()
+                        .substringBefore(".")
+                        .replaceFirstChar { it.uppercase() },
                     style = TextStyle(
                         fontSize = 28.sp,
                         color = Color.White,

@@ -66,7 +66,7 @@ fun LoginInput(
     ) {
         Text(
             modifier = Modifier.padding(start = 20.dp, bottom = 4.dp),
-            text = if (isPassword) "Password" else "User",
+            text = if (isPassword) "Senha" else "User",
             style = TextStyle(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
