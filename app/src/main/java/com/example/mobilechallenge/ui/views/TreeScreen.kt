@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.HomeRepairService
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material3.AlertDialog
@@ -36,8 +37,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,17 +52,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.mobilechallenge.R
 import com.example.mobilechallenge.repositories.TreeNode
 import com.example.mobilechallenge.states.TreeUiState
+import com.example.mobilechallenge.ui.components.EditBottomSheet
+import com.example.mobilechallenge.ui.components.Tree
 import com.example.mobilechallenge.ui.viewmodels.TreeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,6 +83,10 @@ fun TreeScreen(
     var showTree by remember { mutableStateOf(false) }
 
     var tree: List<TreeNode>? by remember { mutableStateOf(null) }
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    var equipmentName by remember { mutableStateOf("") }
 
     LaunchedEffect(uiState.value) {
         when (val treeState = uiState.value) {
@@ -165,7 +178,7 @@ fun TreeScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Logout,
-                    tint = Color.Black,
+                    tint = Color.White,
                     contentDescription = "Logout"
 
                 )
@@ -248,84 +261,14 @@ fun TreeScreen(
                         .heightIn(300.dp, 600.dp)
                 ) {
                     item {
-                        Tree(tree)
+                        Tree(tree, "", treeViewModel)
                     }
                 }
             }
+            if (treeViewModel.showEditBottomSheet.value) {
+                EditBottomSheet(treeViewModel)
+            }
         }
     }
 }
 
-@Composable
-fun Tree(
-    nodes: List<TreeNode>?,
-    indent: String = ""
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 24.dp)
-    ) {
-        if (nodes != null) {
-            nodes.forEach { node ->
-                TreeNodeItem(node)
-            }
-        } else {
-            Text("Árvore vazia")
-        }
-    }
-}
-
-@Composable
-fun TreeNodeItem(
-    node: TreeNode,
-    indent: String = ""
-) {
-    var isAssetExpanded by remember { mutableStateOf(false) }
-
-    var assetModifier = if (node.children.isNotEmpty()) {
-        Modifier.clickable(
-            onClick = {
-                isAssetExpanded = !isAssetExpanded
-            }
-        )
-    } else {
-        // Quando o nó não tem filho o modifier não recebe nada
-        Modifier
-    }
-
-    Row(
-        modifier = assetModifier.padding(vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = when (isAssetExpanded) {
-                true -> {
-                    painterResource(R.drawable.folder_open_24px)
-                }
-                false -> {
-                    if (node.children.isNotEmpty())
-                        painterResource(R.drawable.folder_24px)
-                    else
-                        painterResource(R.drawable.home_repair_service_24px)
-
-                }
-            },
-            tint = Color.Black,
-            contentDescription = null,
-        )
-
-        Spacer(Modifier.padding(horizontal = 4.dp))
-
-        Text(
-            text = if (node.tag.isNullOrEmpty()) "$indent ${node.name}"
-            else "$indent ${node.name} - ${node.tag}",
-            fontSize = 16.sp
-        )
-    }
-
-    if (node.children.isNotEmpty()) {
-        if (isAssetExpanded)
-            Tree(node.children, "$indent  ")
-    }
-}

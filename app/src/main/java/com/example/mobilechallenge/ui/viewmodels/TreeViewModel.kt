@@ -1,5 +1,6 @@
 package com.example.mobilechallenge.ui.viewmodels
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +26,11 @@ class TreeViewModel @Inject constructor(
 
     private val _username = savedStateHandle.get<String>("username") ?: ""
     val username = _username
+
+    var showEditBottomSheet = mutableStateOf(false)
+
+    var equipmentName = mutableStateOf("")
+
 
 
     fun getTree() {
