@@ -37,7 +37,7 @@ fun MobileChallengeNavHost(
         ) {
             TreeScreen(modifier) {
                 navController.navigate("login") {
-                    popUpTo("tree") { inclusive = true }
+                    popUpTo("tree/{token}/{username}") { inclusive = true }
                 }
             }
         }
