@@ -1,6 +1,8 @@
 package com.example.mobilechallenge.repositories
 
 import android.content.Context
+import com.example.mobilechallenge.database.dao.TreeDao
+import com.example.mobilechallenge.database.entities.TreeEntity
 import com.example.mobilechallenge.services.AssetResponse
 import com.example.mobilechallenge.services.TreeService
 import com.example.mobilechallenge.states.TreeUiState
@@ -37,6 +39,7 @@ data class TreeNodeMutable(
 )
 
 class TreeRepositoryImpl @Inject constructor(
+    private val treeDao: TreeDao,
     private val treeService: TreeService,
     @ApplicationContext private val context: Context
 ): TreeRepository {
@@ -137,6 +140,18 @@ class TreeRepositoryImpl @Inject constructor(
             }
         }
         printTree(result)
+
+        val treeEntities = result.forEach { node ->
+            TreeEntity(
+                id = node.id,
+                name = node.name,
+                tag = node.tag,
+                type = node.type,
+                level = node.level,
+                order = node.order,
+                children = node.children
+            )
+        }
 
         return result
     }

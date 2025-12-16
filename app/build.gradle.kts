@@ -42,6 +42,10 @@ android {
 }
 
 dependencies {
+    val room_version = "2.8.4"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:${room_version}")
 
     implementation(libs.androidx.compose.runtime.livedata)
     ksp("com.google.dagger:hilt-android-compiler:2.57.2")
