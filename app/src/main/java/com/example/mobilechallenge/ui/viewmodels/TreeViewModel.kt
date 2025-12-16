@@ -29,7 +29,9 @@ class TreeViewModel @Inject constructor(
 
     var showEditBottomSheet = mutableStateOf(false)
 
-    var equipmentName = mutableStateOf("")
+    var assetName = mutableStateOf("")
+
+    var editingNode = mutableStateOf<TreeNode?>(null)
 
 
 

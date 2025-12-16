@@ -1,6 +1,6 @@
 package com.example.mobilechallenge.ui.components
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -64,23 +64,25 @@ fun Tree(
 fun TreeNodeItem(
     node: TreeNode,
     indent: String = "",
-    treeViewModel: TreeViewModel
+    treeViewModel: TreeViewModel,
 ) {
     var isAssetExpanded by remember { mutableStateOf(false) }
 
-    var assetModifier = if (node.children.isNotEmpty()) {
-        Modifier.clickable(
-            onClick = {
-                isAssetExpanded = !isAssetExpanded
+    val assetModifier = Modifier.combinedClickable(
+            onClick = if (node.children.isNotEmpty()) {
+                { isAssetExpanded = !isAssetExpanded }
+            } else {
+                {}
+            },
+            onLongClick = {
+                treeViewModel.showEditBottomSheet.value = true
+                treeViewModel.assetName.value = node.name
             }
         )
-    } else {
-        // Quando o nó não tem filho o modifier não recebe nada
-        Modifier
-    }
+
 
     Row(
-        modifier = assetModifier.padding(vertical = 20.dp),
+        modifier = assetModifier.padding(vertical = 20.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -133,7 +135,7 @@ fun EditBottomSheet (
             modifier = Modifier.padding(horizontal = 24.dp)
         ) {
             Text(
-                text = "Edit equipment name",
+                text = "Edit asset name",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -151,8 +153,8 @@ fun EditBottomSheet (
                             strokeWidth = 2.dp.toPx()
                         )
                     },
-                value = treeViewModel.equipmentName.value ,
-                onValueChange = { treeViewModel.equipmentName.value = it },
+                value = treeViewModel.assetName.value ,
+                onValueChange = { treeViewModel.assetName.value = it },
                 singleLine = true,
                 leadingIcon = {
                     Icon(

@@ -84,10 +84,6 @@ fun TreeScreen(
 
     var tree: List<TreeNode>? by remember { mutableStateOf(null) }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    var equipmentName by remember { mutableStateOf("") }
-
     LaunchedEffect(uiState.value) {
         when (val treeState = uiState.value) {
             is TreeUiState.Success<*> -> {
@@ -202,7 +198,7 @@ fun TreeScreen(
                 Text(
                     // Formatar o nome com base nos usernames padrão da SEMEQ.
                     text = treeViewModel.username
-                        .toLowerCase()
+                        .lowercase()
                         .substringBefore(".")
                         .replaceFirstChar { it.uppercase() },
                     style = TextStyle(
